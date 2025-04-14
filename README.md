@@ -12,10 +12,8 @@ To start Metro, run the following command from the _root_ of your React Native p
 
 ```bash
 # using npm
-npm start
+npm run ios
 
-# OR using Yarn
-yarn start
 ```
 
 ## Step 2: Start your Application
@@ -77,3 +75,11 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+<!-- 
+Auth Tokens: You store accessToken and refreshToken in AsyncStorage.
+Token Check on Launch: On app start, you use refreshToken to get a new accessToken before rendering screens.
+Navigation Control: Navigation.js checks userToken to decide which screen to show (Login or ProfileForm).
+Validation: Pages are protected via token presence; refreshToken is validated before allowing access.
+Avoid Extra Calls: You avoid refreshing token on every page to reduce network calls.
+ -->
