@@ -25,7 +25,7 @@ export const refresh = async (refreshToken: string) => {
   })
 }
 
-export const getIntrests = async() => {
+export const getInterests = async() => {
   return await axios.get('/intrests')
 }
 
@@ -33,7 +33,28 @@ export const getGenders = async() => {
   return await axios.get('/genders')
 }
 
-export const postUserDetails = async (userData: any) => {
+export const registerNewConnection = async(accessToken: string, body: any) => {
+  return await axios.post('/registerNewConnection', body , {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    }
+  })
+}
+
+// Delete the user connection from socket , 
+// When SQS polls the request , it sens the request to socket handler which checks if a socket connection with client exit 
+// if yest we good for the connection logic 
+// else we delete the message . 
+// 
+export const deleteConnectionRequest = async(requestId? : string, accessToken?: string) => {
+  return await axios.post('deleteConnectionRequest', {requestId}, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    }
+  })
+}
+
+export const postUserDetails = async (userData: any, accessToken: string) => {
   // Create a new FormData object to hold the data
   const formData = new FormData();
 
@@ -64,6 +85,7 @@ export const postUserDetails = async (userData: any) => {
     const response = await axios.post('user/profile', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',  // This header is required for file uploads
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     return response.data;

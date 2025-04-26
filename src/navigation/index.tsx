@@ -10,6 +10,7 @@ import ProfileForm from '../screens/ProfileForm';
 import axiosInstance from '../services/axios';
 import { refresh } from '../services/api';
 import LandingScreen from '../screens/LandingScreen';
+import ConnectingScreen from '../screens/Connecting';
 
 const Stack = createStackNavigator();
 
@@ -21,10 +22,10 @@ const Navigation = () => {
   useEffect(() => {
     const checkToken = async () => {
       try {
-        const token = await AsyncStorage.getItem('refreshToken');
+        const refreshToken = await AsyncStorage.getItem('refreshToken');
         let userDetails = JSON.parse(await AsyncStorage.getItem('userDetails') || '')
         
-        if (!token) {
+        if (!refreshToken) {
           setUserToken(null);
           setIsAppReady(true);
           return;
@@ -34,7 +35,7 @@ const Navigation = () => {
           setuserHasBasicDetails(true)
         } else setuserHasBasicDetails(false)
         
-        const res = await refresh(token);
+        const res = await refresh(refreshToken);
         setUserToken(res.data.accessToken);
         await AsyncStorage.setItem('userToken', res.data.accessToken);
       } catch (err) {
@@ -54,9 +55,12 @@ const Navigation = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {userToken ? (
           userHasBasicDetails ?
-          <Stack.Screen name="Landing Screen" component={LandingScreen} />
+          <>
+            <Stack.Screen name="Landing Screen" component={LandingScreen} />
+            <Stack.Screen name="Connecting Screen" component={ConnectingScreen} />
+          </>
           :
-          <Stack.Screen name="Profile Form Screen" component={ProfileForm} />
+            <Stack.Screen name="Profile Form Screen" component={ProfileForm} />
         ) : (
           <>
             <Stack.Screen name="Login" component={LoginScreen} />

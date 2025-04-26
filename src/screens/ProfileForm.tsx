@@ -11,11 +11,11 @@
     Platform,
   } from 'react-native';
   import { launchImageLibrary } from 'react-native-image-picker';
-  import { getGenders, getIntrests, postUserDetails } from '../services/api';
+  import { getGenders, getInterests, postUserDetails } from '../services/api';
   import { AuthContext } from '../context/AuthContext';
   import AsyncStorage from '@react-native-async-storage/async-storage';
 
-  const UserDetailsScreen = () => {
+  const UserDetailsScreen = ({ navigation }: any) => {
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
     const [gender, setGender] = useState<number | null>(null); // Gender state
@@ -40,7 +40,7 @@
 
           }
           
-          const intrestsResponse = await getIntrests();
+          const intrestsResponse = await getInterests();
           const gendersResponse = await getGenders();
           setGenders(gendersResponse.data);
           setIntrests(intrestsResponse.data);
@@ -52,19 +52,23 @@
     }, []);
 
     const handleSubmit = async () => {
-      const userData = {
-        name,
-        age,
-        gender,
-        bio,
-        image,
-        interests: selectedInterests, // Include selected interests in the submission
-        email: userEmail
-      };
-      console.log(userData);
-      
-      await postUserDetails(userData)
-      // Send to backend
+      const accessToken = await AsyncStorage.getItem('userToken');
+      if(accessToken == null) {
+        navigation.navigate("Login");
+      } else {
+        const userData = {
+          name,
+          age,
+          gender,
+          bio,
+          image,
+          interests: selectedInterests, // Include selected interests in the submission
+          email: userEmail
+        };
+        console.log(userData);
+        
+        await postUserDetails(userData, accessToken)
+      }
     };
 
     const pickImage = () => {
