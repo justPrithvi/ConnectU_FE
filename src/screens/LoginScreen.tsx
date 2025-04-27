@@ -34,6 +34,11 @@ const LoginScreen = ({ navigation }: any) => {
         await AsyncStorage.setItem('userEmail', username)
         await AsyncStorage.setItem('userToken', accessToken);
         await AsyncStorage.setItem('refreshToken', refreshToken)
+
+        if(response.data.user?.photos.length>=1) navigation.navigate("Landing Screen");
+        else navigation.navigate("Profile Form Screen") 
+
+        
         setUserToken(accessToken);
         setUserEmail(username)
     

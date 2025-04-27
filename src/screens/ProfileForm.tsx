@@ -65,9 +65,11 @@
           interests: selectedInterests, // Include selected interests in the submission
           email: userEmail
         };
-        console.log(userData);
+
+        navigation.navigate("Landing Screen");
         
         await postUserDetails(userData, accessToken)
+        // from here i need to refetch the user and update it in stoarage , set a useEffect in index.js for the changing user to fix the naviagation
       }
     };
 

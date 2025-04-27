@@ -41,6 +41,14 @@ export const registerNewConnection = async(accessToken: string, body: any) => {
   })
 }
 
+export const connectToSocket = async(accessToken: string) => {
+  return await axios.get('/connection', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    }
+  })
+}
+
 // Delete the user connection from socket , 
 // When SQS polls the request , it sens the request to socket handler which checks if a socket connection with client exit 
 // if yest we good for the connection logic 

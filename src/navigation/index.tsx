@@ -10,7 +10,7 @@ import ProfileForm from '../screens/ProfileForm';
 import axiosInstance from '../services/axios';
 import { refresh } from '../services/api';
 import LandingScreen from '../screens/LandingScreen';
-import ConnectingScreen from '../screens/Connecting';
+import ConnectingScreen from '../screens/ConnectingScreen';
 
 const Stack = createStackNavigator();
 
@@ -53,20 +53,18 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {userToken ? (
-          userHasBasicDetails ?
+        {userToken ? 
           <>
             <Stack.Screen name="Landing Screen" component={LandingScreen} />
             <Stack.Screen name="Connecting Screen" component={ConnectingScreen} />
-          </>
-          :
             <Stack.Screen name="Profile Form Screen" component={ProfileForm} />
-        ) : (
+          </>
+         : 
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Signup" component={SignupScreen} />
           </>
-        )}
+        }
       </Stack.Navigator>
     </NavigationContainer>
   );
