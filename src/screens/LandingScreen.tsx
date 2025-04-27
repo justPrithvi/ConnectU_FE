@@ -8,6 +8,7 @@ const LandingScreen = ({ navigation }: any) => {
   const { setConnectionRequestId } = useContext(AuthContext);
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
   const [allTags, setallTags] = useState([]);
+  const { setUserInfo } = useContext(AuthContext); // <-- add in AuthContext
 
   useEffect(() => {
     const fetchInterests = async () => {
@@ -45,6 +46,7 @@ const LandingScreen = ({ navigation }: any) => {
         }
         const response = await registerNewConnection(accessToken, body)
         setConnectionRequestId(response.data.messageId)
+        setUserInfo(body)
         navigation.navigate('Connecting Screen')
       }
       

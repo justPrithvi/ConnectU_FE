@@ -6,6 +6,8 @@ interface AuthContextType {
     userToken: string | null;
     userEmail: string | null;
     connectionRequestId: string | null;
+    userInfo: string | null,
+    setUserInfo:  (userInfo: any) => void;
     setUserToken: (token: string | null) => void;
     setUserEmail: (email: string | null) => void;
     setConnectionRequestId: (connectionRequestId: string | null) => void;
@@ -16,6 +18,8 @@ export const AuthContext = createContext<AuthContextType>({
     userToken: null,
     userEmail: null,
     connectionRequestId: null,
+    userInfo: null,
+    setUserInfo: () => {},
     setUserToken: () => {},
     setUserEmail: () => {},
     setConnectionRequestId:  () => {},
@@ -27,6 +31,7 @@ export const AuthProvider = ({ children }: any) => {
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [connectionRequestId, setConnectionRequestId] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<any>(null);
 
   useEffect(() => {
     const loadToken = async () => {
@@ -38,7 +43,7 @@ export const AuthProvider = ({ children }: any) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ userToken, userEmail, connectionRequestId, setUserToken,setUserEmail, setConnectionRequestId, loading }}>
+    <AuthContext.Provider value={{ userToken, userEmail, connectionRequestId, userInfo, setUserInfo, setUserToken,setUserEmail, setConnectionRequestId, loading }}>
       {children}
     </AuthContext.Provider>
   );

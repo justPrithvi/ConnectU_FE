@@ -7,36 +7,35 @@ import useSocket from '../hooks/useSocket'; // Import the custom hook
 
 const ConnectingScreen = ({ navigation }: any) => {
   const [error, setError] = useState<boolean>(false);
-  const { connectionRequestId } = useContext(AuthContext);
+  const { userInfo } = useContext(AuthContext);
 
   // Use the custom hook to connect to the socket
-  const { socket, isConnected, error: socketError } = useSocket('/connection');
+  const { socket, isConnected, error: socketError } = useSocket('/connection', );
   
+  const removeSocket = () => {
+    socket.emit('removeFromRedis', userInfo); // Emit event before disconnecting
+    socket.disconnect();
+  }
   useEffect(() => {
     const timer = setTimeout(() => {
       if (socket && socket.connected) {
-        socket.disconnect();
+        removeSocket()
       }
       setError(true); 
-    }, 10000); 
+    }, 90000); 
 
     return () => clearTimeout(timer);
   }, [socket]);
 
   const handleGoBack = async () => {
     const accessToken = await AsyncStorage.getItem('userToken');
-    socket.disconnect();
-    if (!connectionRequestId || !accessToken) {
+    removeSocket()
+    if (!accessToken) {
       navigation.navigate('Login');
     } else {
-      deleteConnectionRequest(connectionRequestId, accessToken);
       navigation.navigate('Landing Screen');
     }
   };
-
-  const pingSocket = async() => {
-    socket.emit('ping', {a:1})
-  }
 
   return (
     <View style={styles.container}>
@@ -45,8 +44,6 @@ const ConnectingScreen = ({ navigation }: any) => {
           <ActivityIndicator size="large" color="#0000ff" />
           <Text style={styles.connectingText}>Connecting...</Text>
           <Button title="Go Back" onPress={handleGoBack} />
-          <Button title="Ping Socket" onPress={pingSocket} />
-
         </>
       ) : (
         <>
