@@ -14,6 +14,7 @@
   import { getGenders, getInterests, postUserDetails } from '../services/api';
   import { AuthContext } from '../context/AuthContext';
   import AsyncStorage from '@react-native-async-storage/async-storage';
+import LogoutButton from '../components/LogoutButton';
 
   const UserDetailsScreen = ({ navigation }: any) => {
     const [name, setName] = useState('');
@@ -30,8 +31,10 @@
       const loadData = async () => {
         try {
           let userDetails = JSON.parse(await AsyncStorage.getItem('userDetails') || '')
+          console.log(userDetails,"==============");
+          
           if(userDetails) {
-            if(userDetails.username) setName(userDetails.username)
+            if(userDetails.fullName) setName(userDetails.fullName)
             if(userDetails.bio) setBio(userDetails.bio)
             if(userDetails.age) setAge(userDetails.age)
             const interestIds = userDetails.interests.map((userInterest: any) => userInterest.interest.id);
@@ -107,6 +110,7 @@
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <LogoutButton  navigation={navigation}/>
         <ScrollView contentContainerStyle={styles.container}>
           <Text style={styles.label}>Full Name</Text>
           <TextInput

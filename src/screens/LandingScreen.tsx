@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { getInterests, registerNewConnection } from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../context/AuthContext';
+import LogoutButton from '../components/LogoutButton';
 
 const LandingScreen = ({ navigation }: any) => {
   const { setConnectionRequestId } = useContext(AuthContext);
@@ -55,10 +56,12 @@ const LandingScreen = ({ navigation }: any) => {
       
       Alert.alert('Error', 'Something went wrong. Please try again later.');
     }
+
   };
 
   return (
     <View style={styles.container}>
+      <LogoutButton navigation={navigation} />
       <Text style={styles.title}>🚀 Let's Get Started</Text>
       <Text style={styles.subtitle}>Choose your interests to personalize your experience.</Text>
 

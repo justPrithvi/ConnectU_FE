@@ -10,9 +10,9 @@ export const login = async (email:string, password: string) => {
     });
 };
 
-export const signup = async (username:string, email:string, password: string) => {
+export const signup = async (fullName:string, email:string, password: string) => {
     return await axios.post('/auth/signup', {
-      username,
+      fullName,
       email,
       password,
     });

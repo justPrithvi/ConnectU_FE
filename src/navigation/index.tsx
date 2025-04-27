@@ -53,18 +53,11 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {userToken ? 
-          <>
-            <Stack.Screen name="Landing Screen" component={LandingScreen} />
-            <Stack.Screen name="Connecting Screen" component={ConnectingScreen} />
-            <Stack.Screen name="Profile Form Screen" component={ProfileForm} />
-          </>
-         : 
-          <>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Signup" component={SignupScreen} />
-          </>
-        }
+        <Stack.Screen name="Landing Screen" component={LandingScreen} />
+        <Stack.Screen name="Connecting Screen" component={ConnectingScreen} />
+        <Stack.Screen name="Profile Form Screen" component={ProfileForm} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
