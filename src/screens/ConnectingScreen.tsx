@@ -16,16 +16,17 @@ const ConnectingScreen = ({ navigation }: any) => {
     socket.emit('removeFromRedis', userInfo); // Emit event before disconnecting
     socket.disconnect();
   }
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (socket && socket.connected) {
-        removeSocket()
-      }
-      setError(true); 
-    }, 90000); 
+  
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     if (socket && socket.connected) {
+  //       removeSocket()
+  //     }
+  //     setError(true); 
+  //   }, 90000); 
 
-    return () => clearTimeout(timer);
-  }, [socket]);
+  //   return () => clearTimeout(timer);
+  // }, [socket]);
 
   const handleGoBack = async () => {
     const accessToken = await AsyncStorage.getItem('userToken');

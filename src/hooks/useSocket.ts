@@ -40,6 +40,10 @@ const useSocket = (namespace: string) => {
                     console.log('Received pong:', data);
                 });
 
+                socket.on('matchFound', (data: any) => {
+                    console.log("connection found---------------------", data)
+                })
+
                 socketInstance.on('error', (error: any) => {
                     console.log('Socket error:', error);
                     setError(true);
@@ -68,7 +72,7 @@ const useSocket = (namespace: string) => {
                 socketInstance.disconnect();
             }
         };
-    }, [namespace, userInfo]); 
+    }, [namespace]); 
 
     return { socket, isConnected, error };
 };

@@ -45,8 +45,8 @@ const LandingScreen = ({ navigation }: any) => {
           interests: userDetails.interests,
           selectedInterests: selectedTags
         }
-        const response = await registerNewConnection(accessToken, body)
-        setConnectionRequestId(response.data.messageId)
+        // const response = await registerNewConnection(accessToken, body)
+        // setConnectionRequestId(response.data.messageId)
         setUserInfo(body)
         navigation.navigate('Connecting Screen')
       }
