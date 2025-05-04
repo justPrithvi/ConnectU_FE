@@ -26,6 +26,7 @@ const LoginScreen = ({ navigation }: any) => {
       
       try {
         const response = await login(username, password);
+        
         const accessToken = response.data.tokens.accessToken;
         const refreshToken = response.data.tokens.refreshToken;
         // Save the user in context for future user
@@ -35,18 +36,17 @@ const LoginScreen = ({ navigation }: any) => {
         await AsyncStorage.setItem('userToken', accessToken);
         await AsyncStorage.setItem('refreshToken', refreshToken)
 
-        if(response.data.user?.photos.length>=1) navigation.navigate("Landing Screen");
-        else navigation.navigate("Profile Form Screen") 
-
-        
         setUserToken(accessToken);
         setUserEmail(username)
     
         showNotification("Login Successful", "success");
+
+        if(response.data.user?.photos.length>=1) navigation.navigate("Landing Screen");
+        else navigation.navigate("Profile Form Screen") 
+
         
         // navigation.navigate("ProfileInputScreen");
       } catch (error) {
-        console.log(error,"==========");
         navigation.navigate("Login");
         showNotification("An error occurred. Please try again.", "error");
       }
