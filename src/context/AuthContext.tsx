@@ -6,7 +6,7 @@ interface AuthContextType {
     userToken: string | null;
     userEmail: string | null;
     connectionRequestId: string | null;
-    userInfo: string | null,
+    userInfo: any | null,
     setUserInfo:  (userInfo: any) => void;
     setUserToken: (token: string | null) => void;
     setUserEmail: (email: string | null) => void;

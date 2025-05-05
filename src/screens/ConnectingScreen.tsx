@@ -10,7 +10,7 @@ const ConnectingScreen = ({ navigation }: any) => {
   const { userInfo } = useContext(AuthContext);
 
   // Use the custom hook to connect to the socket
-  const { socket, isConnected, error: socketError } = useSocket('/connection', );
+  const { socket, isConnected, error: socketError } = useSocket('/connection', navigation );
   
   const removeSocket = () => {
     socket.emit('removeFromRedis', userInfo); // Emit event before disconnecting

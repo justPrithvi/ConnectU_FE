@@ -4,9 +4,10 @@ import { getInterests, registerNewConnection } from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../context/AuthContext';
 import LogoutButton from '../components/LogoutButton';
+import { useNavigation } from '@react-navigation/native';
 
-const LandingScreen = ({ navigation }: any) => {
-  const { setConnectionRequestId } = useContext(AuthContext);
+const LandingScreen = () => {
+  const navigation = useNavigation();
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
   const [allTags, setallTags] = useState([]);
   const { setUserInfo } = useContext(AuthContext); // <-- add in AuthContext
@@ -43,7 +44,8 @@ const LandingScreen = ({ navigation }: any) => {
           email: userDetails.email,
           gender: userDetails.gender,
           interests: userDetails.interests,
-          selectedInterests: selectedTags
+          selectedInterests: selectedTags,
+          fullName: userDetails.fullName
         }
         // const response = await registerNewConnection(accessToken, body)
         // setConnectionRequestId(response.data.messageId)
