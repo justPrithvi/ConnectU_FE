@@ -11,10 +11,19 @@ import axiosInstance from '../services/axios';
 import { refresh } from '../services/api';
 import LandingScreen from '../screens/LandingScreen';
 import ConnectingScreen from '../screens/ConnectingScreen';
-import ChatScreen from '../screens/ChatScreen';
+import ChatScreen from '../screens/NewChatScreen';
 import FooterLayout from '../components/footer/FooterLayout';
 
-const Stack = createStackNavigator();
+export type RootStackParamList = {
+  'Landing Screen': undefined;
+  'Profile Form Screen': undefined;
+  'Connecting Screen': undefined;
+  'New-Connection-Chat-Screen': undefined;
+  Login: undefined;
+  Signup: undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 const Navigation = () => {
   return (
@@ -22,7 +31,11 @@ const Navigation = () => {
       <Stack.Navigator screenOptions={{ gestureEnabled: false , headerShown: false}}>
         <Stack.Screen
           name="Landing Screen"
-          component={LandingScreen}
+          children={() => (
+            <FooterLayout>
+              <LandingScreen />
+            </FooterLayout>
+          )}
         />
         <Stack.Screen
           name="Profile Form Screen"
@@ -34,7 +47,7 @@ const Navigation = () => {
           
         />
         <Stack.Screen
-          name="Chat Screen"
+          name="New-Connection-Chat-Screen"
           component={ChatScreen}
         />
         <Stack.Screen

@@ -3,6 +3,7 @@
     import AsyncStorage from '@react-native-async-storage/async-storage';
     import { AuthContext } from '../context/AuthContext';
     import { Alert } from 'react-native';
+import { refresh } from '../services/api';
 
     const useSocket = (namespace: string, navigation: any) => {
         const [socket, setSocket] = useState<any>(null);
@@ -15,6 +16,7 @@
 
             const setupSocket = async () => {
                 const accessToken = await AsyncStorage.getItem('userToken');
+                const refreshToken = await AsyncStorage.getItem('refreshToken')
                 if (accessToken) {
                     socketInstance = io(`http://localhost:3000${namespace}`, {
                         transports: ['websocket'],
@@ -38,13 +40,48 @@
                         setIsConnected(false);
                     });
 
-                    socketInstance.on('pong', (data: any) => {
-                        console.log('Received pong:', data);
+                    socketInstance.on('receive message', (data: any) => {
+                        console.log('Received message:', data);
                     });
 
+                    socketInstance.on('auth_error', async () => {
+                        if (refreshToken) {
+                            try {
+                                const data = await refresh(refreshToken);
+                                const newAccessToken = data?.data?.accessToken;
+                                const newRefreshToken = data?.data?.refreshToken;
+                    
+                                if (newAccessToken && newRefreshToken) {
+                                    await AsyncStorage.setItem('userToken', newAccessToken);
+                                    await AsyncStorage.setItem('refreshToken', newRefreshToken);
+                    
+                                    // Clean up current socket
+                                    socketInstance.disconnect();
+                    
+                                    // Recreate socket with new token
+                                    const newSocket = io(`http://localhost:3000${namespace}`, {
+                                        transports: ['websocket'],
+                                        extraHeaders: {
+                                            Authorization: `Bearer ${newAccessToken}`,
+                                        },
+                                    });
+                    
+                                    // Set up the same listeners
+                                    setSocket(newSocket); // update state
+                    
+                                    // Optional: you can abstract this into a function for reuse
+                                }
+                            } catch (e) {
+                                console.log('Refresh failed:', e);
+                                setError(true);
+                            }
+                        }
+                    });
+                    
+
                     socketInstance.on('matchFound', (data: any) => {
-                        Alert.alert('Success', `You are connected to ${data}`);
-                        navigation.navigate('Chat Screen');
+                        Alert.alert('Success', `You are connected to ${data.name}`);
+                        navigation.navigate('New-Connection-Chat-Screen',  { connectedUserInfo: data, socket: socketInstance });
                     })
 
                     socketInstance.on('error', (error: any) => {

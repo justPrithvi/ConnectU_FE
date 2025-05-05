@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  Platform,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -23,8 +24,9 @@ const Footer = ({ navigation }: any) => {
             key={index}
             style={styles.tabButton}
             onPress={() => navigation.navigate(tab.screen)}
+            activeOpacity={0.7}
           >
-            <Ionicons name={tab.icon} size={24} color="#4F8EF7" />
+            <Ionicons name={tab.icon} size={24} color="#1e3a8a" />
             <Text style={styles.tabText}>{tab.label}</Text>
           </TouchableOpacity>
         ))}
@@ -35,20 +37,16 @@ const Footer = ({ navigation }: any) => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#f0f4ff',
+    backgroundColor: '#ffffff',
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: 'rgba(240, 244, 255, 0.9)',
+    backgroundColor: '#ffffff',
     borderTopWidth: 1,
-    borderColor: '#cbd5e0',
+    borderColor: '#e2e8f0',
     paddingVertical: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: -2 },
-    shadowRadius: 8,
-    elevation: 5,
+   
   },
   tabButton: {
     alignItems: 'center',
@@ -57,7 +55,7 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: 12,
-    color: '#2c5282',
+    color: '#1e3a8a',
     marginTop: 2,
     fontWeight: '500',
   },

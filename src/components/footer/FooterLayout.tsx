@@ -16,7 +16,7 @@ const FooterLayout = ({ children }: any) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  content: { flex: 1, marginBottom: 60 }, // leave space for footer
+  content: { flex: 1 }, // leave space for footer
 });
 
 export default FooterLayout;
