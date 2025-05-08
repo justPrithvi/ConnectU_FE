@@ -12,11 +12,12 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRoute } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const ChatWindow = ({ navigation }: any) => {
   const route = useRoute();
   const { userInfo } = useContext(AuthContext);
-  const { connectedUserInfo, socket }: any = route.params;
+  const { receiverUserInfo, socket }: any = route.params;
 
   const [messages, setMessages] = useState<any[]>([]);
   const [inputText, setInputText] = useState("");
@@ -26,20 +27,18 @@ const ChatWindow = ({ navigation }: any) => {
     socket.disconnect();
     navigation.navigate("Landing Screen");
   };
-
+  
   const handleSend = () => {
     if (inputText.trim()) {
       const newMsg = {
         id: Date.now(),
         from: userInfo?.email,
-        to: connectedUserInfo?.email,
+        to: receiverUserInfo?.email,
         text: inputText.trim(),
       };
       setMessages((prev) => [...prev, newMsg]);
       setInputText("");
-
-      // You can emit socket event here
-      // socket.emit('sendMessage', newMsg);
+      socket.emit('sendMessage', newMsg)
     }
   };
 
@@ -57,7 +56,8 @@ const ChatWindow = ({ navigation }: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={handleNavigate}>
-        <Text style={styles.backText}>← Back</Text>
+        <Ionicons name="arrow-back" size={24} color="#fff" />
+        <Text style={styles.backText}>Back</Text>
       </TouchableOpacity>
 
       <FlatList
@@ -87,67 +87,84 @@ const ChatWindow = ({ navigation }: any) => {
 
 export default ChatWindow;
 
+// Updated styles below
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f9f9f9",
   },
   backButton: {
-    padding: 12,
-    backgroundColor: "#4e8cff",
+    flexDirection: "row",
     alignItems: "center",
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    backgroundColor: "#4e8cff",
+    elevation: 2,
   },
   backText: {
     color: "#fff",
-    fontWeight: "bold",
+    fontWeight: "600",
+    fontSize: 16,
+    marginLeft: 8,
   },
   chatContainer: {
-    padding: 10,
+    padding: 12,
     flexGrow: 1,
   },
   messageBubble: {
     maxWidth: "75%",
-    padding: 10,
-    borderRadius: 10,
-    marginVertical: 4,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 18,
+    marginVertical: 6,
+    elevation: 1,
   },
   fromMe: {
-    backgroundColor: "#dcf8c6",
+    backgroundColor: "#4e8cff",
     alignSelf: "flex-end",
+    borderTopRightRadius: 4,
   },
   fromThem: {
-    backgroundColor: "#f1f0f0",
+    backgroundColor: "#e5e5ea",
     alignSelf: "flex-start",
+    borderTopLeftRadius: 4,
   },
   messageText: {
-    fontSize: 16,
+    fontSize: 15,
+    color: "#000",
   },
   inputContainer: {
     flexDirection: "row",
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
     borderTopWidth: 1,
     borderColor: "#ddd",
-    backgroundColor: "#fafafa",
+    backgroundColor: "#fff",
+    alignItems: "center",
   },
   input: {
     flex: 1,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 8,
+    borderRadius: 25,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
     fontSize: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "#fdfdfd",
   },
   sendButton: {
     backgroundColor: "#4e8cff",
     marginLeft: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 25,
     justifyContent: "center",
+    elevation: 2,
   },
   sendText: {
     color: "#fff",
     fontWeight: "bold",
+    fontSize: 16,
   },
 });
+

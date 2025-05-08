@@ -40,7 +40,8 @@ import { refresh } from '../services/api';
                         setIsConnected(false);
                     });
 
-                    socketInstance.on('receive message', (data: any) => {
+                    socketInstance.on('receive_message', (data: any) => {
+                        Alert.alert('Success', `You have a new message -> ${data}`);
                         console.log('Received message:', data);
                     });
 
@@ -81,7 +82,9 @@ import { refresh } from '../services/api';
 
                     socketInstance.on('matchFound', (data: any) => {
                         Alert.alert('Success', `You are connected to ${data.name}`);
-                        navigation.navigate('New-Connection-Chat-Screen',  { connectedUserInfo: data, socket: socketInstance });
+                        console.log(data,"====================");
+                        
+                        navigation.navigate('New-Connection-Chat-Screen',  { receiverUserInfo: data, socket: socketInstance });
                     })
 
                     socketInstance.on('error', (error: any) => {

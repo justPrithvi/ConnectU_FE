@@ -13,7 +13,7 @@ const ConnectingScreen = ({ navigation }: any) => {
   const { socket, isConnected, error: socketError } = useSocket('/connection', navigation );
   
   const removeSocket = () => {
-    socket.emit('removeFromRedis', userInfo); // Emit event before disconnecting
+    socket.emit('removeFromRedis', userInfo);
     socket.disconnect();
   }
   
