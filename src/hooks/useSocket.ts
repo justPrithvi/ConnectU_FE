@@ -3,14 +3,16 @@
     import AsyncStorage from '@react-native-async-storage/async-storage';
     import { AuthContext } from '../context/AuthContext';
     import { Alert } from 'react-native';
-import { refresh } from '../services/api';
+    import { refresh } from '../services/api';
+    import { CommonActions } from '@react-navigation/native';
+    import { useMessages } from '../context/MessageContext';
 
     const useSocket = (namespace: string, navigation: any) => {
         const [socket, setSocket] = useState<any>(null);
         const [isConnected, setIsConnected] = useState<boolean>(false);
         const [error, setError] = useState<boolean>(false);
         const { userInfo } = useContext(AuthContext);
-
+        const { newConnectionMsgs, addNewConnectionMessage } = useMessages();
         useEffect(() => {
             let socketInstance: any;
 
@@ -40,9 +42,9 @@ import { refresh } from '../services/api';
                         setIsConnected(false);
                     });
 
-                    socketInstance.on('receive_message', (data: any) => {
-                        Alert.alert('Success', `You have a new message -> ${data}`);
-                        console.log('Received message:', data);
+                    socketInstance.on('receive_new_connection_message', (receivedMessage: any) => {
+                        // Add msg to context which will be read by the message useEffect()
+                        addNewConnectionMessage(receivedMessage)                          
                     });
 
                     socketInstance.on('auth_error', async () => {
@@ -81,8 +83,21 @@ import { refresh } from '../services/api';
                     
 
                     socketInstance.on('matchFound', (data: any) => {
-                        Alert.alert('Success', `You are connected to ${data.name}`);
-                        console.log(data,"====================");
+                        Alert.alert('Success', `You are connected to ${data.name}`);   
+                        // navigation.dispatch(
+                        //     CommonActions.reset({
+                        //         index: 0,
+                        //         routes: [
+                        //             {
+                        //                 name: "New-Connection-Chat-Screen",
+                        //                 params: {
+                        //                     receiverUserInfo: data,
+                        //                     socket: socketInstance,
+                        //                 },
+                        //             },
+                        //         ],
+                        //     })
+                        // );    
                         
                         navigation.navigate('New-Connection-Chat-Screen',  { receiverUserInfo: data, socket: socketInstance });
                     })

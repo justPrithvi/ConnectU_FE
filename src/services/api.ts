@@ -62,6 +62,10 @@ export const deleteConnectionRequest = async(requestId? : string, accessToken?: 
   })
 }
 
+export const connectUsers = () => {
+  
+}
+
 export const postUserDetails = async (userData: any, accessToken: string) => {
   // Create a new FormData object to hold the data
   const formData = new FormData();

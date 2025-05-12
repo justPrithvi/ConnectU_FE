@@ -11,7 +11,7 @@ import axiosInstance from '../services/axios';
 import { refresh } from '../services/api';
 import LandingScreen from '../screens/LandingScreen';
 import ConnectingScreen from '../screens/ConnectingScreen';
-import ChatScreen from '../screens/NewChatScreen';
+import NewConnectionChatScreen from '../screens/NewChatScreen';
 import FooterLayout from '../components/footer/FooterLayout';
 
 export type RootStackParamList = {
@@ -48,7 +48,7 @@ const Navigation = () => {
         />
         <Stack.Screen
           name="New-Connection-Chat-Screen"
-          component={ChatScreen}
+          component={NewConnectionChatScreen}
         />
         <Stack.Screen
           name="Login"

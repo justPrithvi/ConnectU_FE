@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { deleteConnectionRequest } from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useSocket from '../hooks/useSocket'; // Import the custom hook
+import { CommonActions } from '@react-navigation/native';
 
 const ConnectingScreen = ({ navigation }: any) => {
   const [error, setError] = useState<boolean>(false);
@@ -23,19 +24,23 @@ const ConnectingScreen = ({ navigation }: any) => {
   //       removeSocket()
   //     }
   //     setError(true); 
-  //   }, 90000); 
+  //   }, 9000); 
 
   //   return () => clearTimeout(timer);
   // }, [socket]);
 
   const handleGoBack = async () => {
     const accessToken = await AsyncStorage.getItem('userToken');
-    removeSocket()
-    if (!accessToken) {
-      navigation.navigate('Login');
-    } else {
-      navigation.navigate('Landing Screen');
-    }
+    removeSocket();
+  
+    const targetRoute = accessToken ? 'Landing Screen' : 'Login';
+  
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: targetRoute }],
+      })
+    );
   };
 
   return (
